@@ -41,21 +41,28 @@ app.post("/api/v1/signup", async (req, res) => {
 
 //User signin
 app.post("/api/v1/signin", async (req, res) => {
+    console.log("BODY:", req.body);
+
     const username = req.body.username;
     const password = req.body.password;
     const existingUser = await UserModel.findOne({
         username,
-        password
     })
+
+    console.log("USER:", existingUser);
+
 
     if(existingUser){
         const token = jwt.sign({
             id: existingUser._id
         },JWT_SECRET)
+
+        console.log("TOKEN GENERATED:", token);
         
         res.json({
             token
         })
+        console.log("TOKEN SENT:", token);
     }
     else{
         res.status(403).json({
@@ -86,11 +93,11 @@ app.post("/api/v1/content",userMiddleware, async (req, res) => {
 //User Access Content
 app.get("/api/v1/content", userMiddleware, async (req, res) => {
     const userId = req.userId;
-    const content = await ContentModel.find({
+    const contents = await ContentModel.find({
         userId: userId
     }).populate("userId", "username")
     res.json({
-        content
+        contents
     })
 })
 

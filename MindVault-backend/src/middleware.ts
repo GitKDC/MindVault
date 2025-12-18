@@ -8,6 +8,15 @@ interface customJwt extends JwtPayload {
 }
 export const userMiddleware =  (req: Request, res: Response, next: NextFunction ) => {
     const header = req.headers["authorization"];
+
+    if (!header) {
+        return res.status(403).json({
+            message: "Authorization header missing"
+        });
+    }
+
+    const token = header.split(" ")[1];
+
     const decoded = jwt.verify(header as string, JWT_SECRET) as customJwt;
     if(decoded){
         req.userId = decoded.id;

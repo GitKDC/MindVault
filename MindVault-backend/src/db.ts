@@ -14,7 +14,7 @@ const ContentSchema = new Schema({
     link: String,
     type: String,
     title: String,
-    shareToken: { type: String, unique: true},
+    shareToken: { type: String, unique: true, sparse: true},
     tags: [{type: Schema.Types.ObjectId, ref: "tags"}],
     userId: {type : Schema.Types.ObjectId, ref : "users", required: true}
 })

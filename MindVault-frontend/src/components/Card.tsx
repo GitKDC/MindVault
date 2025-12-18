@@ -1,9 +1,10 @@
 import { ShareIcon } from "../icons/ShareIcon";
+import { ContentType } from "../types/content";
 
 interface CardProps {
     title : string;
     link : string;
-    type : "twitter" | "youtube" | "medium";
+    type : ContentType;
 }
 
 export function Card ( { title , link , type} : CardProps) {
@@ -28,9 +29,9 @@ export function Card ( { title , link , type} : CardProps) {
                 </div>
             </div>
             <div className="pt-4">
-                { type === "youtube" && <iframe className="w-full h-full" width="560" height="315" src={`https://www.youtube.com/embed/${link.split("v=")[1]}`} /*this converts watch?v=abc123 → embed/abc123*/ title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen></iframe>}
+                { type === ContentType.Youtube && <iframe className="w-full h-full" width="560" height="315" src={`https://www.youtube.com/embed/${link.split("v=")[1]}`} /*this converts watch?v=abc123 → embed/abc123*/ title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen></iframe>}
 
-                {type === "twitter" &&  <blockquote className="twitter-tweet">
+                { type === ContentType.X && <blockquote className="twitter-tweet">
                     <a href={link.replace("x.com", "twitter.com")}></a> 
                  </blockquote>}
 

@@ -1,15 +1,21 @@
 import '../App.css';
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Button } from '../components/Button'
 import { Card } from '../components/Card'
 import { ShareIcon } from '../icons/ShareIcon'
 import { PlusIcon } from '../icons/PlusIcon'
 import { ContentModal } from '../components/ContentModal'
 import { Sidebar } from '../components/Sidebar'
+import { useContent } from '../hooks/useContent';
 
 export default function Dashboard () {
   const [count, setCount] = useState(0)
   const [modalOpen , setModalOpen ] = useState(false)
+  const {contents, refresh} = useContent();
+
+  useEffect(()=>{
+    refresh()
+  },[modalOpen])
 
   return ( <div>
    <Sidebar />
@@ -23,11 +29,15 @@ export default function Dashboard () {
               setModalOpen(true)
             }} variant="secondary" text="Add Content" startIcon={<PlusIcon />}/>
           </div>
-     
+            
 
-        <div className='flex gap-2'>
-          <Card type = "youtube" link = "https://www.youtube.com/watch?v=GGli3uBqUts" title= "React with typescript" />
-          <Card type = "twitter" link = "https://x.com/freeCodeCamp/status/2000732870524948760" title= "Freecodecamp" />
+        <div className='flex gap-2 flex-wrap'>
+            {contents.map(({_id, type, link, title})=> <Card 
+            key = {_id}
+            type = {type} 
+            link = {link} 
+            title={title} 
+          />)}
         </div>
       </div>
   </div>

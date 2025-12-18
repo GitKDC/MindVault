@@ -3,21 +3,30 @@ import { Input } from "../components/Input";
 import { useRef } from 'react';
 import { BACKEND_URL } from "../config";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export function SignIn () {
     const usernameRef = useRef<HTMLInputElement>(null);
     const passwordRef = useRef<HTMLInputElement>(null);
+    const navigate = useNavigate();
 
-    async function signup() {
+    async function signin() {
+       
         const username = usernameRef.current?.value;
         const password = passwordRef.current?.value;
-        await axios.post(BACKEND_URL + "api/v1/signup", {
-            data : {
+        try{
+            const response = await axios.post(BACKEND_URL + "/api/v1/signin", {
                 username,
                 password
-            }
-        })
-        alert("You have signed up")
+            })
+            console.log("FULL RESPONSE:", response.data.token);
+            localStorage.setItem('token', response.data.token);
+            alert("Welcome to MindVault");
+            navigate("/dashboard");
+        } catch(e : any){
+             alert(e.response?.data?.message || "Signin failed");
+        }
+        
     }
 
     return <div className="h-screen w-screen bg-gray-200 flex justify-center items-center">
@@ -29,7 +38,7 @@ export function SignIn () {
                 <Input ref={passwordRef} placeholder="Password" />
             </div>
             <div className="flex justify-center py-1">
-                <Button loading={false} variant="primary" text="SignIn" fullWidth={true} />
+                <Button onClick={signin} loading={false} variant="primary" text="SignIn" fullWidth={true} />
             </div>
         </div>
     </div>
