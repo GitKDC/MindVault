@@ -1,12 +1,14 @@
 import express from "express";
 import mongoose from "mongoose";
 import jwt from "jsonwebtoken"; 
-import { ContentModel, UserModel } from "./db.js";
+import { ContentModel, LinkModel, UserModel } from "./db.js";
 import { JWT_SECRET } from "./config.js";
 import { userMiddleware } from "./middleware.js";
-import crypto from "crypto";
+import crypto, { hash } from "crypto";
 import bcrypt from "bcrypt";
 import cors from 'cors';
+import { random } from "./utils.js";
+import { ObjectTypeDeclaration } from "typescript";
 
 const app = express();
 app.use(express.json()); //middleware for parsing json request bodies 
@@ -132,54 +134,78 @@ app.get("/api/v1/content/title", userMiddleware, async (req, res) => {
     })
 })
 
-app.post("/api/v1/content/:id/share", userMiddleware, async (req, res) => {
-    const contentId = req.params.id;
-    const userId = req.userId;
+app.post("/api/v1/mind/share", userMiddleware, async (req, res) => {
+    const { share } = req.body;
+    if( share ) {
+        const hash = random(10)
+            const existingLink = await LinkModel.findOne({
+                userId: req.userId
+            })
 
-    const content = await ContentModel.findOne({
-        _id: contentId, 
-        userId
-    })
-    
-    if(!content){
-        return res.status(404).json({
-            message: "Content not found"
+            if(existingLink) {
+                res.json({
+                    hash: existingLink.hash
+                })
+                return;
+            }
+            await LinkModel.create({
+                userId: req.userId,
+                hash: hash
+            })
+
+            res.json({
+                hash
+            })
+    } else {
+        await LinkModel.deleteOne({
+            userId: req.userId
+        })
+
+        res.json({
+            message: "Removed link"
         })
     }
 
-    //generate sharetoken
-    const shareToken = crypto.randomBytes(16).toString("hex");
-
-    //save that token to content 
-    content.shareToken = shareToken
-    await content.save();
-
     res.json({
-        message: "Share link generated",
-        shareLink: `http://localhost:3000/share/${shareToken}`
+        message : "Updated shareable link",
+        hash
     })
 
 })
 
-app.get("/api/v1/content/share/:token", userMiddleware, async (req, res) => {
-    const token = req.params.token;
+app.get("/api/v1/mind/:shareLink", userMiddleware, async (req, res) => {
+    const hash = req.params.shareLink;
 
-    const content = await ContentModel.findOne({
-        shareToken: token
-    }).populate<{ userId: { username: string } }>("userId", "username")
-
-    if(!content){
-    return res.status(404).json({
-        message : "Expired Link"
+    const link = await LinkModel.findOne({
+        hash
     })
+
+    if(!link) {
+        res.status(411).json({
+            message: "Incorrect Input"
+        })
+        return;
+    }
+    const content = await ContentModel.findOne({
+        userId: link.userId
+    })
+
+    const User = await UserModel.findOne({
+        _id: link.userId 
+    })
+
+    if(!User) {
+        res.status(411).json({
+            message: "Incorrect Input"
+        })
     }
 
     res.json({
-        title: content.title,
-        link: content.link,
-        tags: content.tags,
-        sharedBy: content.userId?.username
-    });
+        username: User?.username,
+        content: content
+    })
+
+    
 
 })
 
