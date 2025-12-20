@@ -1,5 +1,13 @@
+import type { ReactNode } from "react";
+import { DeleteIcon } from "../icons/DeleteIcon";
+import { DocIcon } from "../icons/DocIcon";
 import { ShareIcon } from "../icons/ShareIcon";
+import { TwitterIcon } from "../icons/TwitterIcon";
 import { ContentType } from "../types/content";
+import { LinkIcon } from "../icons/LinkIcon";
+import { BlogIcon } from "../icons/BlogIcon";
+import { LinkedInIcon } from "../icons/LinkedInIcon";
+import { YTIcon } from "../icons/YTIcon";
 
 interface CardProps {
     title : string;
@@ -7,13 +15,19 @@ interface CardProps {
     type : ContentType;
 }
 
+
+
 export function Card ( { title , link , type} : CardProps) {
     return (
         <div className="bg-white rounded-md shadow-md border-slate-200 p-8 max-w-85 min-w-85 border min-h-35"> 
             <div className="flex justify-between">
                 <div className="flex items-center pr-4 text-md">
                     <div className="text-gray-500 pr-3">
-                        <ShareIcon />
+                        {type === ContentType.Youtube && <YTIcon /> || 
+                         type === ContentType.X && <TwitterIcon /> ||
+                         type === ContentType.Blog && <BlogIcon /> ||
+                         type === ContentType.LinkedIn && <LinkedInIcon /> ||
+                         type === ContentType.Other && <LinkIcon />}
                     </div>
                     {title}
                 </div>
@@ -22,8 +36,10 @@ export function Card ( { title , link , type} : CardProps) {
                         <a href={link} target="_blank"></a>
                         <ShareIcon />
                     </div>
-                    <div className="pr-3">
-                        <ShareIcon />
+                    <div className="pr-3 text-gray-500">
+                        {/* <DeleteIcon onClick={()=>alert("clicked")}/> */}
+                        <DeleteIcon onClick={() => alert("clicked")} />
+
                     </div>
                     
                 </div>
@@ -34,7 +50,6 @@ export function Card ( { title , link , type} : CardProps) {
                 { type === ContentType.X && <blockquote className="twitter-tweet">
                     <a href={link.replace("x.com", "twitter.com")}></a> 
                  </blockquote>}
-
             </div>
            
         </div>

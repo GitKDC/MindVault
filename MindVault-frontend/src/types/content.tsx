@@ -1,7 +1,7 @@
 export enum ContentType {
   Youtube = "youtube",
   X = "x",
-  Medium = "medium",
+  Blog = "blog",
   LinkedIn = "linkedin",
   Other = "other"
 }

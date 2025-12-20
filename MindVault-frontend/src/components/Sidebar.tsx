@@ -1,6 +1,6 @@
 import { Logo } from "../icons/Logo";
 import { TwitterIcon } from "../icons/TwitterIcon";
-import { YouTubeIcon } from "../icons/YoutubeIcon";
+import { YTIcon } from "../icons/YTIcon";
 import { SidebarItem } from "./SidebarItem";
 
 export function Sidebar () {
@@ -10,11 +10,11 @@ export function Sidebar () {
                 <Logo />
             </div>
             <div className="font-semibold">
-                Second Brain
+                MindVault
             </div>
         </div>
         <div className="pt-8 pl-4">
-            <SidebarItem icon={<YouTubeIcon />} text="Youtube" />
+            <SidebarItem icon={<YTIcon />} text="Youtube" />
             <SidebarItem icon={<TwitterIcon />} text="X" />
         </div>
         

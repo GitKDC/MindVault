@@ -24,6 +24,7 @@ export default function Dashboard () {
             setModalOpen(false)
          }} />
           <div className='flex justify-end gap-3'>
+            
             <Button variant="primary" text="Share Brain" startIcon={<ShareIcon />}/>
             <Button onClick={ () => {
               setModalOpen(true)
