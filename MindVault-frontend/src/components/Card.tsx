@@ -8,16 +8,47 @@ import { LinkIcon } from "../icons/LinkIcon";
 import { BlogIcon } from "../icons/BlogIcon";
 import { LinkedInIcon } from "../icons/LinkedInIcon";
 import { YTIcon } from "../icons/YTIcon";
+import { BACKEND_URL } from "../config";
+import axios from "axios";
 
 interface CardProps {
+    _id: string
     title : string;
     link : string;
     type : ContentType;
+    refresh?: () => void;
+    onClick?: ()=> void;
 }
 
+const deleteContent = async (contentId: string) => {
+    const confirmation=window.confirm("Are you Fuckinnnnn sureeeeee!!!!!!!!!");
+    if(confirmation){
+await axios.delete(`${BACKEND_URL}/api/v1/content/:contentId`, {
+        data: { contentId },
+        headers: {
+            Authorization: localStorage.getItem("token")
+        }
+    })
+    }else{
+        window.alert("YOu areee safeee!")
+    }
+    
+    // window.alert("hit done");
+}
+
+const copyContentLink = async (link: string) => {
+    console.log("link copied")
+    try {
+        await navigator.clipboard.writeText(link);
+        alert("Link copied to clipboard");
+    } catch (err) {
+        alert("Failed to copy link");
+    }
+};
 
 
-export function Card ( { title , link , type} : CardProps) {
+
+export function Card ( { _id, title , link , type} : CardProps) {
     return (
         <div className="bg-white rounded-md shadow-md border-slate-200 p-8 max-w-85 min-w-85 border min-h-35"> 
             <div className="flex justify-between">
@@ -32,13 +63,11 @@ export function Card ( { title , link , type} : CardProps) {
                     {title}
                 </div>
                 <div className="flex">
-                    <div className="pr-3 text-gray-500">
-                        <a href={link} target="_blank"></a>
+                    <div className="pr-3 text-gray-500" onClick={()=>copyContentLink(link)}>
                         <ShareIcon />
                     </div>
-                    <div className="pr-3 text-gray-500">
-                        {/* <DeleteIcon onClick={()=>alert("clicked")}/> */}
-                        <DeleteIcon onClick={() => alert("clicked")} />
+                    <div className="pr-3 text-gray-500" onClick={()=>deleteContent(_id)} > 
+                        <DeleteIcon />
 
                     </div>
                     
