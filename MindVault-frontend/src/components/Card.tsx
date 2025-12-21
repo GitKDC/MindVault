@@ -10,6 +10,7 @@ import { LinkedInIcon } from "../icons/LinkedInIcon";
 import { YTIcon } from "../icons/YTIcon";
 import { BACKEND_URL } from "../config";
 import axios from "axios";
+import { GithubIcon } from "../icons/GithubIcon";
 
 interface CardProps {
     _id: string
@@ -50,7 +51,7 @@ const copyContentLink = async (link: string) => {
 
 export function Card ( { _id, title , link , type} : CardProps) {
     return (
-        <div className="bg-white rounded-md shadow-md border-slate-200 p-8 max-w-85 min-w-85 flex flex-col border min-h-35"> 
+        <div className="bg-white rounded-md shadow-md border-slate-200 p-8 max-w-90 min-w-90 flex flex-col border min-h-45"> 
             <div className="flex justify-between">
                 <div className="flex items-center pr-4 text-md">
                     <div className="text-gray-500 pr-3">
@@ -58,6 +59,7 @@ export function Card ( { _id, title , link , type} : CardProps) {
                          type === ContentType.X && <TwitterIcon /> ||
                          type === ContentType.Blog && <BlogIcon /> ||
                          type === ContentType.LinkedIn && <LinkedInIcon /> ||
+                         type === ContentType.Github && <GithubIcon /> ||
                          type === ContentType.Other && <LinkIcon />}
                     </div>
                     <span className="leading-none"> {title}</span>
@@ -80,9 +82,19 @@ export function Card ( { _id, title , link , type} : CardProps) {
                     <a href={link.replace("x.com", "twitter.com")}></a> 
                  </blockquote>}
 
-                { type === ContentType.LinkedIn && <iframe src="https://www.linkedin.com/embed/feed/update/urn:li:share:7408459383476588544?collapsed=1" height="670" width="504" frameBorder="0" allowFullScreen title="Embedded post"></iframe>}
-            </div>
+                { type === ContentType.LinkedIn &&
+                 <a
+                    href={link}
+                    target="_blank"
+                    className="flex h-full w-full items-center justify-center bg-[#0A66C2] text-white rounded-md"
+                    >
+                    <div className="text-center">
+                        <div className="text-sm opacity-80">LinkedIn Post</div>
+                        <div className="font-semibold mt-1">View on LinkedIn</div>
+                    </div>
+                </a> }
            
         </div>
+    </div>
     )
 }
