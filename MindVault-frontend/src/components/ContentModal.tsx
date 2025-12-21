@@ -72,6 +72,9 @@ export function ContentModal ({open, onClose}) {
                                         <Button text="LinkedIn" variant={type === ContentType.LinkedIn ? "primary": "secondary"} onClick={()=>{
                                         setType(ContentType.LinkedIn)
                                         }}></Button>
+                                        <Button text="Github" variant={type === ContentType.Github ? "primary": "secondary"} onClick={()=>{
+                                        setType(ContentType.Github)
+                                        }}></Button>
                                         <Button text="Other" variant={type === ContentType.Other ? "primary": "secondary"} onClick={()=>{
                                         setType(ContentType.Other)
                                         }}></Button>

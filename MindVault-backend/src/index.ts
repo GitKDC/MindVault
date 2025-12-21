@@ -137,7 +137,9 @@ app.get("/api/v1/content/title", userMiddleware, async (req, res) => {
 app.post("/api/v1/mind/share", userMiddleware, async (req, res) => {
     const { share } = req.body;
     if( share ) {
-        const hash = random(10)
+
+            const hash = random(10)
+
             const existingLink = await LinkModel.findOne({
                 userId: req.userId
             })
@@ -148,6 +150,7 @@ app.post("/api/v1/mind/share", userMiddleware, async (req, res) => {
                 })
                 return;
             }
+            
             await LinkModel.create({
                 userId: req.userId,
                 hash: hash

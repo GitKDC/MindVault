@@ -50,7 +50,7 @@ const copyContentLink = async (link: string) => {
 
 export function Card ( { _id, title , link , type} : CardProps) {
     return (
-        <div className="bg-white rounded-md shadow-md border-slate-200 p-8 max-w-85 min-w-85 border min-h-35"> 
+        <div className="bg-white rounded-md shadow-md border-slate-200 p-8 max-w-85 min-w-85 flex flex-col border min-h-35"> 
             <div className="flex justify-between">
                 <div className="flex items-center pr-4 text-md">
                     <div className="text-gray-500 pr-3">
@@ -60,7 +60,7 @@ export function Card ( { _id, title , link , type} : CardProps) {
                          type === ContentType.LinkedIn && <LinkedInIcon /> ||
                          type === ContentType.Other && <LinkIcon />}
                     </div>
-                    {title}
+                    <span className="leading-none"> {title}</span>
                 </div>
                 <div className="flex">
                     <div className="pr-3 text-gray-500" onClick={()=>copyContentLink(link)}>
@@ -73,12 +73,14 @@ export function Card ( { _id, title , link , type} : CardProps) {
                     
                 </div>
             </div>
-            <div className="pt-4">
+            <div className="mt-3 h-[180px] overflow-hidden rounded-md bg-gray-50">
                 { type === ContentType.Youtube && <iframe className="w-full h-full" width="560" height="315" src={`https://www.youtube.com/embed/${link.split("v=")[1]}`} /*this converts watch?v=abc123 → embed/abc123*/ title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen></iframe>}
 
                 { type === ContentType.X && <blockquote className="twitter-tweet">
                     <a href={link.replace("x.com", "twitter.com")}></a> 
                  </blockquote>}
+
+                { type === ContentType.LinkedIn && <iframe src="https://www.linkedin.com/embed/feed/update/urn:li:share:7408459383476588544?collapsed=1" height="670" width="504" frameBorder="0" allowFullScreen title="Embedded post"></iframe>}
             </div>
            
         </div>
