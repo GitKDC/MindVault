@@ -9,6 +9,8 @@ import bcrypt from "bcrypt";
 import cors from 'cors';
 import { random } from "./utils.js";
 import { ObjectTypeDeclaration } from "typescript";
+import { signinSchema, signupSchema } from "./validators/auth.js";
+import { safeParse } from "zod";
 
 const app = express();
 app.use(express.json()); //middleware for parsing json request bodies 
@@ -16,22 +18,38 @@ app.use(cors());
 
 //User signup
 app.post("/api/v1/signup", async (req, res) => {
-    //zod validation 
-    const username = req.body.username;
-    const password = req.body.password;
+    console.log(req.body)
+    const parsed = signupSchema.safeParse(req.body)
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+    if(!parsed.success) {
+       const error: Record<string, string> = {};
+
+        parsed.error.issues.forEach((issue) => {
+            const field = issue.path[0]; // "username" or "password"
+            if (field) {
+            error[field as string] = issue.message;
+            }
+        });
+
+        return res.status(400).json({
+            error
+        });
+    }
+
+    const { username, password } = parsed.data;
 
     try{
-        await UserModel.create({
-        username: username,
-        password: hashedPassword
-    })
+        const hashedPassword = await bcrypt.hash(password, 10);
 
-    res.json({
-        message : "User Signed Up"
-    })
-    }catch(err){
+            await UserModel.create({
+            username: username,
+            password: hashedPassword
+        })
+
+        res.json({
+            message : "User Signed Up"
+        })
+     }catch(err){
         res.status(411).json({
             message : "User already exist"
         })
@@ -45,8 +63,16 @@ app.post("/api/v1/signup", async (req, res) => {
 app.post("/api/v1/signin", async (req, res) => {
     console.log("BODY:", req.body);
 
-    const username = req.body.username;
-    const password = req.body.password;
+    const parsed = signinSchema.safeParse(req.body)
+
+    if (!parsed.success) {
+    return res.status(400).json({
+      message: "Invalid input"
+    });
+    }
+
+    const { username, password } = parsed.data;
+
     const existingUser = await UserModel.findOne({
         username,
     })
