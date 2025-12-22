@@ -10,7 +10,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
         ref={ref}
         type="text"
         placeholder={placeholder}
-        className="px-4 py-2"
+        className="px-4 w-full py-2"
       />
     );
   }

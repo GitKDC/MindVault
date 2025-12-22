@@ -49,11 +49,11 @@ export function ContentModal ({open, onClose}) {
                                         <CrossIcon />
                                     </div>
                                 </div>
-                                <div className="flex">
-                                    <div>
+                                <div className="flex w-full gap-3">
+                                    <div className="flex-[2]">
                                         <Input ref={titleRef} placeholder = "Title" />
                                     </div>
-                                    <div>
+                                    <div className="flex-[2]">
                                         <Input ref={linkRef} placeholder = "Link" />
                                     </div>
                                     
@@ -66,7 +66,7 @@ export function ContentModal ({open, onClose}) {
                                         <Button text="X" variant={type === ContentType.X ? "primary": "secondary"} onClick={()=>{
                                         setType(ContentType.X)
                                         }}></Button>
-                                        <Button text="Medium" variant={type === ContentType.Blog ? "primary": "secondary"} onClick={()=>{
+                                        <Button text="Blog" variant={type === ContentType.Blog ? "primary": "secondary"} onClick={()=>{
                                         setType(ContentType.Blog)
                                         }}></Button>
                                         <Button text="LinkedIn" variant={type === ContentType.LinkedIn ? "primary": "secondary"} onClick={()=>{
