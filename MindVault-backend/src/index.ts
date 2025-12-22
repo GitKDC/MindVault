@@ -176,7 +176,7 @@ app.post("/api/v1/mind/share", userMiddleware, async (req, res) => {
 
 })
 
-app.get("/api/v1/mind/:shareLink", userMiddleware, async (req, res) => {
+app.get("/api/v1/mind/:shareLink", async (req, res) => {
     const hash = req.params.shareLink;
 
     const link = await LinkModel.findOne({
@@ -185,11 +185,11 @@ app.get("/api/v1/mind/:shareLink", userMiddleware, async (req, res) => {
 
     if(!link) {
         res.status(411).json({
-            message: "Incorrect Input"
+            message: "Invalid Link"
         })
         return;
     }
-    const content = await ContentModel.findOne({
+    const content = await ContentModel.find({
         userId: link.userId
     })
 
@@ -198,8 +198,8 @@ app.get("/api/v1/mind/:shareLink", userMiddleware, async (req, res) => {
     })
 
     if(!User) {
-        res.status(411).json({
-            message: "Incorrect Input"
+        res.status(404).json({
+            message: "User not found"
         })
     }
 

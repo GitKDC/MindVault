@@ -42,7 +42,7 @@ export function Navbar ({type} : NavbarProps) {
                         "Authorization": localStorage.getItem("token")
                         }
                     })
-                    const shareUrl = `http://localhost:5173/${response.data.hash}`;
+                    const shareUrl = `http://localhost:5173/mind/${response.data.hash}`;
                     
                     try {
                         await navigator.clipboard.writeText(shareUrl);

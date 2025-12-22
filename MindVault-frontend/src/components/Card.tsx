@@ -19,6 +19,7 @@ interface CardProps {
     type : ContentType;
     refresh?: () => void;
     onClick?: ()=> void;
+    readOnly?: boolean;
 }
 
 const deleteContent = async (contentId: string) => {
@@ -49,7 +50,7 @@ const copyContentLink = async (link: string) => {
 
 
 
-export function Card ( { _id, title , link , type} : CardProps) {
+export function Card ( { _id, title , link , type, readOnly} : CardProps) {
     return (
         <div className="bg-white rounded-md shadow-md border-slate-200 p-8 max-w-90 min-w-90 flex flex-col border min-h-45"> 
             <div className="flex justify-between">
@@ -64,7 +65,7 @@ export function Card ( { _id, title , link , type} : CardProps) {
                     </div>
                     <span className="leading-none"> {title}</span>
                 </div>
-                <div className="flex">
+                { !readOnly && <div className="flex">
                     <div className="pr-3 text-gray-500" onClick={()=>copyContentLink(link)}>
                         <ShareIcon />
                     </div>
@@ -73,7 +74,7 @@ export function Card ( { _id, title , link , type} : CardProps) {
 
                     </div>
                     
-                </div>
+                </div>}
             </div>
             <div className="mt-3 h-[180px] overflow-hidden rounded-md bg-gray-50">
                 { type === ContentType.Youtube && <iframe className="w-full h-full" width="560" height="315" src={`https://www.youtube.com/embed/${link.split("v=")[1]}`} /*this converts watch?v=abc123 → embed/abc123*/ title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen></iframe>}
