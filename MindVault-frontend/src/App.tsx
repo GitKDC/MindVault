@@ -1,7 +1,7 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Dashboard from "./pages/Dashboard";
-import { SignUp } from "./pages/SignUp";
-import { SignIn } from "./pages/SignIn";
+import SignUp  from "./pages/SignUp";
+import SignIn from "./pages/SignIn";
 import SharePage from "./pages/SharePage";
 import HomePage from "./pages/HomePage";
 
