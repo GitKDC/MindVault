@@ -5,7 +5,7 @@ export function SidebarItem({ icon, text }: {
     text: string
 }
 ) {
-    return <div className="flex items-center text-gray-600 cursor-pointer hover:bg-gray-200 rounded-md transition-all  max-w-50">
+    return <div className="flex items-center text-gray-800 cursor-pointer hover:bg-gray-200 rounded-lg transition-colors py-2 px-4 my-1">
         <div className="p-2">
             {icon}
         </div>

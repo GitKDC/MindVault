@@ -1,4 +1,3 @@
-import { useContent } from "../hooks/useContent";
 import { BlogIcon } from "../icons/BlogIcon";
 import { GithubIcon } from "../icons/GithubIcon";
 import { LinkedInIcon } from "../icons/LinkedInIcon";
@@ -8,25 +7,22 @@ import { TwitterIcon } from "../icons/TwitterIcon";
 import { YTIcon } from "../icons/YTIcon";
 import { ContentType } from "../types/content";
 import { SidebarItem } from "./SidebarItem";
-import { useEffect, useState } from 'react'
+
+
 
 interface SidebarProps {
-    setFilter? : ()=> void;
-    setSelectedType?: string;
+    setFilter: (type: ContentType | "all") => void;
+    setSelectedType: (type: ContentType | "all") => void;
 }
 
 export function Sidebar ({setFilter,setSelectedType}: SidebarProps) {
 
-
-    const selectFilter =(type: string)=>{
-        //@ts-ignore
+    const selectFilter =(type: ContentType | "all")=>{
         setFilter(type);
-        console.log("IN filter:: ",type);
-        //@ts-ignore
         setSelectedType(type);
     }
    
-    return <div className="h-screen bg-white border-r w-72 fixed left-0 top-0 pl-6">
+    return <div className="h-screen bg-white border-r w-72 fixed left-0 top-0 pl-6 shadow-lg">
         <div className="flex items-center gap-3 text-2xl pt-8">
             <div className="pr-1 text-purple-800">
                 <Logo />
@@ -39,19 +35,19 @@ export function Sidebar ({setFilter,setSelectedType}: SidebarProps) {
              <div onClick={() => selectFilter("all")}>
                 <SidebarItem icon={<LinkIcon />} text="All" />
             </div>
-            <div onClick={()=> selectFilter("youtube")}>
+            <div onClick={()=> selectFilter(ContentType.Youtube)}>
                 <SidebarItem  icon={<YTIcon />} text="Youtube" />
             </div>
-            <div onClick={()=> selectFilter("x")}>
+            <div onClick={()=> selectFilter(ContentType.X)}>
                 <SidebarItem icon={<TwitterIcon />} text="X" />
             </div>
-            <div onClick={()=> selectFilter("linkedin")}>
+            <div onClick={()=> selectFilter(ContentType.LinkedIn)}>
                 <SidebarItem  icon={<LinkedInIcon />} text="LinkedIn" />
             </div>
-            <div onClick={()=> selectFilter("github")}>
+            <div onClick={()=> selectFilter(ContentType.Github)}>
                 <SidebarItem  icon={<GithubIcon />} text="Github" />
             </div>
-            <div onClick={()=> selectFilter("blog")}>
+            <div onClick={()=> selectFilter(ContentType.Blog)}>
                 <SidebarItem  icon={<BlogIcon />} text="Blogs" />
             </div>
         </div>
