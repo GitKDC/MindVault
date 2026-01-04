@@ -1,56 +1,82 @@
-import { BlogIcon } from "../icons/BlogIcon";
-import { GithubIcon } from "../icons/GithubIcon";
-import { LinkedInIcon } from "../icons/LinkedInIcon";
-import { LinkIcon } from "../icons/LinkIcon";
-import { Logo } from "../icons/Logo";
-import { TwitterIcon } from "../icons/TwitterIcon";
-import { YTIcon } from "../icons/YTIcon";
-import { ContentType } from "../types/content";
+import { Brain, Home, Youtube, Twitter, Linkedin, Github, FileText, Link2 } from "lucide-react";
 import { SidebarItem } from "./SidebarItem";
 
-
+type ContentFilter = "all" | "youtube" | "twitter" | "linkedin" | "github" | "blog" | "other";
 
 interface SidebarProps {
-    setFilter: (type: ContentType | "all") => void;
-    setSelectedType: (type: ContentType | "all") => void;
+  filter: ContentFilter;
+  setFilter: (type: ContentFilter) => void;
 }
 
-export function Sidebar ({setFilter,setSelectedType}: SidebarProps) {
+export function Sidebar({ filter, setFilter }: SidebarProps) {
+  return (
+    <div className="h-screen w-72 bg-card/80 backdrop-blur-xl border-r border-border fixed left-0 top-0 flex flex-col">
+      {/* Logo */}
+      <div className="flex items-center gap-3 p-6 border-b border-border">
+        <div className="p-2 rounded-xl bg-primary/20">
+          <Brain className="h-6 w-6 text-primary" />
+        </div>
+        <span className="text-xl font-bold text-foreground">MindVault</span>
+      </div>
 
-    const selectFilter =(type: ContentType | "all")=>{
-        setFilter(type);
-        setSelectedType(type);
-    }
-   
-    return <div className="h-screen bg-white border-r w-72 fixed left-0 top-0 pl-6 shadow-lg">
-        <div className="flex items-center gap-3 text-2xl pt-8">
-            <div className="pr-1 text-purple-800">
-                <Logo />
-            </div>
-            <div className="font-semibold">
-                MindVault
-            </div>
+      {/* Navigation */}
+      <nav className="flex-1 p-4 space-y-2">
+        <SidebarItem
+          icon={<Home className="h-5 w-5" />}
+          text="All Content"
+          active={filter === "all"}
+          onClick={() => setFilter("all")}
+        />
+        <SidebarItem
+          icon={<Youtube className="h-5 w-5" />}
+          text="YouTube"
+          active={filter === "youtube"}
+          onClick={() => setFilter("youtube")}
+        />
+        <SidebarItem
+          icon={<Twitter className="h-5 w-5" />}
+          text="Twitter / X"
+          active={filter === "twitter"}
+          onClick={() => setFilter("twitter")}
+        />
+        <SidebarItem
+          icon={<Linkedin className="h-5 w-5" />}
+          text="LinkedIn"
+          active={filter === "linkedin"}
+          onClick={() => setFilter("linkedin")}
+        />
+        <SidebarItem
+          icon={<Github className="h-5 w-5" />}
+          text="GitHub"
+          active={filter === "github"}
+          onClick={() => setFilter("github")}
+        />
+        <SidebarItem
+          icon={<FileText className="h-5 w-5" />}
+          text="Blogs"
+          active={filter === "blog"}
+          onClick={() => setFilter("blog")}
+        />
+        <SidebarItem
+          icon={<Link2 className="h-5 w-5" />}
+          text="Other Links"
+          active={filter === "other"}
+          onClick={() => setFilter("other")}
+        />
+      </nav>
+
+      {/* Storage indicator */}
+      <div className="p-4 border-t border-border">
+        <div className="p-4 rounded-xl bg-secondary/50">
+          <div className="flex justify-between text-sm mb-2">
+            <span className="text-muted-foreground">Storage</span>
+            <span className="text-foreground font-medium">2.4 GB / 5 GB</span>
+          </div>
+          <div className="h-2 bg-muted rounded-full overflow-hidden">
+            <div className="h-full w-[48%] bg-gradient-to-r from-primary to-accent rounded-full" />
+          </div>
         </div>
-        <div className="pt-8 pl-4">
-             <div onClick={() => selectFilter("all")}>
-                <SidebarItem icon={<LinkIcon />} text="All" />
-            </div>
-            <div onClick={()=> selectFilter(ContentType.Youtube)}>
-                <SidebarItem  icon={<YTIcon />} text="Youtube" />
-            </div>
-            <div onClick={()=> selectFilter(ContentType.X)}>
-                <SidebarItem icon={<TwitterIcon />} text="X" />
-            </div>
-            <div onClick={()=> selectFilter(ContentType.LinkedIn)}>
-                <SidebarItem  icon={<LinkedInIcon />} text="LinkedIn" />
-            </div>
-            <div onClick={()=> selectFilter(ContentType.Github)}>
-                <SidebarItem  icon={<GithubIcon />} text="Github" />
-            </div>
-            <div onClick={()=> selectFilter(ContentType.Blog)}>
-                <SidebarItem  icon={<BlogIcon />} text="Blogs" />
-            </div>
-        </div>
-        
+      </div>
     </div>
+  );
 }
